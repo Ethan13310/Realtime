@@ -166,7 +166,7 @@ export class RoomServer extends EventEmitter
      * @param {IRoomServerOptions} [options] - Les options du serveur.
      */
 
-    constructor(publicUrl: string, nats: NatsClient, ws: WebSocket.Server, options?: IRoomServerOptions)
+    public constructor(publicUrl: string, nats: NatsClient, ws: WebSocket.Server, options?: IRoomServerOptions)
     {
         super();
 
@@ -528,19 +528,22 @@ export class RoomServer extends EventEmitter
     {
         const list: IRoomList = {};
 
-        this._rooms.forEach((room: Room) =>
+        if (this._options.syncRooms)
         {
-            // On récupère le résumé des salons, avec ou sans les clients en
-            // fonction des paramètres du room server
-            const summary = room.summary;
-
-            if (this._options.syncClients)
+            this._rooms.forEach((room: Room) =>
             {
-                summary.clients = room.clients;
-            }
+                // On récupère le résumé des salons, avec ou sans les clients en
+                // fonction des paramètres du room server
+                const summary = room.summary;
 
-            list[room.id] = summary;
-        });
+                if (this._options.syncClients)
+                {
+                    summary.clients = room.clients;
+                }
+
+                list[room.id] = summary;
+            });
+        }
 
         this._nats.publish(replyTo, list);
     }

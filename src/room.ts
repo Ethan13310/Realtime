@@ -125,7 +125,7 @@ export class Room extends EventEmitter
      * @param {IRoomOptions} [options] - Les options du salon.
      */
 
-    constructor(publicUrl: string, id: string, properties?: any, options?: IRoomOptions)
+    public constructor(publicUrl: string, id: string, properties?: any, options?: IRoomOptions)
     {
         super();
 

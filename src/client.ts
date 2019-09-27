@@ -28,7 +28,7 @@ export class Client extends EventEmitter
     /**
      * Le socket du client.
      */
-    private _socket: WebSocket;
+    private readonly _socket: WebSocket;
 
     /**
      * L'id du client.
@@ -38,10 +38,10 @@ export class Client extends EventEmitter
     /**
      * Les propriétés du client.
      */
-    private readonly _properties: any;
+    private _properties: any;
 
     /**
-     * Nombre de pings manqués.
+     * Le nombre de pings manqués par le client.
      */
     private _missedPings: number = 0;
 
@@ -105,6 +105,17 @@ export class Client extends EventEmitter
     public get properties(): any
     {
         return this._properties;
+    }
+
+    /**
+     * Modifie les propriétés du client.
+     *
+     * @param {*} value
+     */
+
+    public set properties(value: any)
+    {
+        this._properties = value;
     }
 
     /**

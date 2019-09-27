@@ -5,7 +5,7 @@ import * as jwt from 'jsonwebtoken';
 import { EventEmitter } from 'events';
 import { IRoomSummary } from './room';
 import { IClientSummary } from './client';
-import { Client as NatsClient, NatsError } from 'nats';
+import { Client as NatsClient } from 'nats';
 import { IRoomList, IRoomServer, IRoomServerPing } from './room-server';
 
 /**
@@ -349,7 +349,7 @@ export class Discovery extends EventEmitter
         this.emit('newServer', server);
 
         // Puis on récupère les salons existants
-        this._nats.request(`rooms.${server.publicUrl}`, null, { max: 1 }, (rooms: IRoomList | NatsError) =>
+        this._nats.request(`rooms.${server.publicUrl}`, null, { max: 1 }, (rooms: IRoomList) =>
         {
             // On ajoute les salons au serveur
             Object.values(rooms).forEach((room: IRoomSummary) =>

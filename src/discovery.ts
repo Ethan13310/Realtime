@@ -263,8 +263,9 @@ export class Discovery extends EventEmitter
 
         if (event.subject === 'newRoom')
         {
-            return this._addNewRoom(roomServer, <IRoomSummary> {
+            return this._addNewRoom(roomServer, {
                 id: event.roomId,
+                publicUrl: event.publicUrl,
                 properties: event.properties,
                 clients: {}
             });

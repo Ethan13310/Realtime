@@ -320,7 +320,7 @@ export class RoomServer extends EventEmitter
 
     private _connectClient(socket: WebSocket, token: ITokenOptions)
     {
-        const room = this._getRoom(token.roomId, token.roomProperties);
+        const room = this._getRoom(token.roomId, token.roomProperties, token.joinOnly);
 
         // On vérifie que le client n'est pas déjà connecté au salon
         if (room.hasClient(token.clientId))
@@ -406,12 +406,13 @@ export class RoomServer extends EventEmitter
      * @param {string} roomId - L'id du salon.
      * @param {*} [properties] - Les propriétés à assigner au salon dans le
      *        cas où il n'existerai pas encore.
+     * @param {boolean} doNotCreate
      *
      * @returns {Room}
      * @private
      */
 
-    private _getRoom(roomId: string, properties?: any): Room
+    private _getRoom(roomId: string, properties?: any, doNotCreate: boolean = false): Room
     {
         const room = this._rooms.get(roomId);
 
@@ -419,6 +420,13 @@ export class RoomServer extends EventEmitter
         {
             // Le salon existe
             return room;
+        }
+
+        if (doNotCreate)
+        {
+            // Le salon n'eiste pas, mais se création a explicitement été
+            // interdite
+            throw new Error('This room does not exist.');
         }
 
         // Le salon n'existe pas, on le crée

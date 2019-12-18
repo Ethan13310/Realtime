@@ -42,6 +42,13 @@ export interface ITokenOptions
     clientProperties?: any;
 
     /**
+     * Si défini à true, alors ce token est valide uniquement pour rejoindre
+     * un salon existant. S'il n'existe pas, aucun nouveau salon sera créé et
+     * une erreur sera retournée au client.
+     */
+    joinOnly?: boolean;
+
+    /**
      * Le délais d'expiration du token.
      */
     expiresIn?: string;
@@ -223,7 +230,8 @@ export class Discovery extends EventEmitter
             roomId: options.roomId,
             roomProperties: options.roomProperties,
             clientId: options.clientId,
-            clientProperties: options.clientProperties
+            clientProperties: options.clientProperties,
+            joinOnly: options.joinOnly
         };
 
         return jwt.sign(payload, this._tokenSecret, {

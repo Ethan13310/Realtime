@@ -509,6 +509,7 @@ export class RoomServer extends EventEmitter
         room.clearPingInterval();
 
         // On notifie les listeners
+        room.emit('removed');
         this.emit('roomRemoved', room);
 
         if (this._options.syncRooms)

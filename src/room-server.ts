@@ -104,6 +104,12 @@ export interface IRoomServerOptions
      * Les options des salons.
      */
     roomOptions?: IRoomOptions;
+
+    /**
+     * La clé de génération des JSON web tokens. Si cet argument n'est pas
+     * précisé, alors la variable d'environnment DISCOVERY_SECRET est utilisée.
+     */
+    tokenSecret?: string;
 }
 
 /**
@@ -178,6 +184,9 @@ export class RoomServer extends EventEmitter
 
         // Serveur WebSocket
         this._ws = ws;
+
+        // Clé de génération des JSON web tokens.
+        this._tokenSecret = options?.tokenSecret ?? this._tokenSecret;
 
         // Options du serveur
         this._options = defaults(options, {

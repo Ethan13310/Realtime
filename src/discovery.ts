@@ -100,13 +100,20 @@ export class Discovery extends EventEmitter
      * Constructeur du serveur de discovery.
      *
      * @param {NatsClient} nats - L'instance du client NATS.
+     * @param {string} [tokenSecret] - La clé de génération des JSON web
+     *        tokens. Si cet argument n'est pas précisé, alors la variable
+     *        d'environnment DISCOVERY_SECRET est utilisée.
      */
 
-    public constructor(nats: NatsClient)
+    public constructor(nats: NatsClient, tokenSecret?: string)
     {
         super();
 
+        // Client NATS
         this._nats = nats;
+
+        // Clé de génération des JSON web tokens.
+        this._tokenSecret = tokenSecret ?? this._tokenSecret;
 
         // On démarre la boucle de vérification des room servers
         this._checkLoopInterval = setInterval(() => this._serverCheckLoop(), this._serverTimeout / 2);
